@@ -1,0 +1,14 @@
+{
+  "title": "OWASP SKF Cross-Site Request Forgery",
+  "description": "A Flask application with a login (admin/admin) and a form that stores the user's favourite colour in their profile. The state-changing POST has no anti-CSRF token.",
+  "question": "Build a page on another origin that silently changes the logged-in victim's favourite colour (cross-site request forgery).",
+  "category": "WEB",
+  "difficulty": 2,
+  "evidence_kind": "SECRET",
+  "capabilities": [
+    "csrf",
+    "session",
+    "client-side",
+    "forms"
+  ]
+}
