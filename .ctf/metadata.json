@@ -4,11 +4,5 @@
   "question": "Build a page on another origin that silently changes the logged-in victim's favourite colour (cross-site request forgery).",
   "category": "WEB",
   "difficulty": 2,
-  "evidence_kind": "SECRET",
-  "capabilities": [
-    "csrf",
-    "session",
-    "client-side",
-    "forms"
-  ]
+  "evidence_kind": "SECRET"
 }
