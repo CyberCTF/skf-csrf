@@ -1,0 +1,45 @@
+{
+  "objectives": [
+    {
+      "key": "main",
+      "title": "Read the flag",
+      "prompt": "Change the victim's colour from another origin and retrieve the flag (/ctf/flag).",
+      "check": {
+        "evidence": "SECRET",
+        "format": "FLAG{%s}"
+      },
+      "dev": "FLAG{dev-skf-csrf}",
+      "hints": [
+        "The state-changing form carries nothing an attacker cannot guess.",
+        "Read about cross-site request forgery and anti-CSRF tokens."
+      ],
+      "steps": [
+        {
+          "key": "missing",
+          "title": "Find the gap",
+          "prompt": "What does the colour form lack that would stop forged requests?",
+          "check": {
+            "answer": [
+              "csrf token",
+              "anti-csrf token",
+              "token",
+              "anti csrf token"
+            ]
+          }
+        },
+        {
+          "key": "class",
+          "title": "Name the weakness",
+          "prompt": "What class of vulnerability is this? (acronym accepted)",
+          "check": {
+            "answer": [
+              "csrf",
+              "cross-site request forgery",
+              "cross site request forgery"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
