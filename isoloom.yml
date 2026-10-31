@@ -1,13 +1,14 @@
 # yaml-language-server: $schema=https://www.isoloom.com/schema/v1.json
-# OWASP SKF Cross-Site Request Forgery (OWASP Security Knowledge Framework labs, by Glenn ten Cate, Riccardo ten Cate and the SKF contributors) as an Isoloom spec:
-# a Flask app whose favourite-colour form changes state with a POST that carries no anti-CSRF token (CSRF). The SKF lab folder python/CSRF is
-# vendored unchanged in app/ and built by its own Dockerfile through an overlay
+# OWASP SKF Cross-Site Request Forgery (OWASP Security Knowledge Framework labs, by Glenn ten Cate,
+# Riccardo ten Cate and the SKF contributors) as an Isoloom spec: a Flask app whose favourite-colour
+# form changes state with a POST that carries no anti-CSRF token (CSRF). The SKF lab folder
+# python/CSRF is vendored unchanged in app/ and built by its own Dockerfile through an overlay
 # (build/web/Dockerfile) that adds the flag folder /ctf.
 # `isoloom generate`, then `isoloom run docker`.
 version: 1
 name: skf-csrf
 
-# Given by the CyberCTF launcher: this player's flag. Without it the development flag.
+# Given by the CyberCTF launcher: this player's flag. Without one the inert dev placeholder.
 inputs: [CTF_FLAG_MAIN]
 
 networks:
@@ -16,14 +17,16 @@ networks:
 machines:
   web:
     networks: { lab: 10 }
-    services: [{ port: 5000, name: web, http: true, publish: 5050 }]
+    ports: { web: { port: 5000, protocol: http, publish: 5050 } }
     resources: { cpus: 1, memory_mb: 256 }
-    inputs: [CTF_FLAG_MAIN]
-    volumes: { ctf: /ctf }   # the flag, written by ctf/flag.sh at every start
-    docker:
+    files:
+      # The player's flag, placed at each start where the old init script wrote it (a client-side
+      # lab: a victim bot is to deliver it later); without the input the inert dev placeholder.
+      - path: /ctf/flag
+        input: CTF_FLAG_MAIN
+        mode: "0444"
+    app:
       build: app
-      dockerfile: build/web/Dockerfile
-      init: [ctf/flag.sh]
 
 checks:
   - name: the lab answers
@@ -33,5 +36,5 @@ checks:
     script: checks/color.sh
 
 message: |
-  OWASP SKF Cross-Site Request Forgery answers at http://localhost:{{ machines.web.services.0.publish }}/.
+  OWASP SKF Cross-Site Request Forgery answers at {{ machines.web.ports.web.url }}.
   Log in with admin/admin. The colour form at /update has no token: who else could submit it?
